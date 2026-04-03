@@ -1,28 +1,585 @@
-<section class="section">
-  <h2>VETONE Nasıl Çalışır?</h2>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VETONE – Müziği Sen Kontrol Et</title>
+  <meta
+    name="description"
+    content="VETONE ile istemediğin şarkıları otomatik atla. Kara liste oluştur, tek dokunuşla engelle, arka planda kontrol sende olsun."
+  />
 
-  <div class="features">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
-    <!-- SCREEN 1 -->
-    <div class="card">
-      <img src="screen1.jpg" style="width:100%; border-radius:12px;">
-      <h3>Müziği Sen Kontrol Et</h3>
-      <p>Şu an çalan müziği analiz eder ve kontrolü sana verir.</p>
+    :root {
+      --bg: #020617;
+      --bg-soft: #0f172a;
+      --card: rgba(255,255,255,0.06);
+      --card-hover: rgba(255,255,255,0.10);
+      --text: #ffffff;
+      --muted: #94a3b8;
+      --line: rgba(255,255,255,0.08);
+      --primary: #7c3aed;
+      --primary-2: #a855f7;
+      --accent: #22c55e;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top, #1e293b 0%, #0b1120 40%, #020617 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(2, 6, 23, 0.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #9333ea;
+      letter-spacing: 0.2px;
+    }
+
+    .brand .shield {
+      font-size: 28px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      border-radius: 14px;
+      padding: 14px 22px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 12px 30px rgba(124, 58, 237, 0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(124, 58, 237, 0.35);
+    }
+
+    .btn-secondary {
+      color: white;
+      border-color: rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      padding: 84px 0 52px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.14);
+      color: #c4b5fd;
+      border: 1px solid rgba(124, 58, 237, 0.22);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      letter-spacing: -1.4px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 19px;
+      max-width: 640px;
+      margin-bottom: 28px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .hero-note {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero-shot {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 14px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-shot img {
+      width: 100%;
+      display: block;
+      border-radius: 20px;
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 34px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 12px;
+      letter-spacing: -0.8px;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 26px;
+      transition: 0.25s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+
+    .feature-card:hover {
+      background: var(--card-hover);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(124, 58, 237, 0.14);
+      color: #d8b4fe;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .gallery-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      overflow: hidden;
+      transition: 0.25s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      background: var(--card-hover);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      background: #111827;
+    }
+
+    .gallery-content {
+      padding: 20px 20px 22px;
+    }
+
+    .gallery-content h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .gallery-content p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .step {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .step h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .step p {
+      color: var(--muted);
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(34,197,94,0.12));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 28px;
+      padding: 42px 26px;
+      text-align: center;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+    }
+
+    .cta-box h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 12px;
+    }
+
+    .cta-box p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 700px;
+      margin: 0 auto 24px;
+    }
+
+    footer {
+      padding: 34px 0 56px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #c4b5fd;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .cards-3,
+      .gallery-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      .nav-actions {
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 12px 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .brand {
+        font-size: 24px;
+      }
+
+      .hero p,
+      .section-header p,
+      .cta-box p {
+        font-size: 16px;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+      }
+
+      .hero-cta .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <span class="shield">🛡️</span>
+        <span>VETONE</span>
+      </div>
+
+      <div class="nav-actions">
+        <a href="https://x.com/vetoneofficial" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">X</a>
+        <a href="#" class="btn btn-primary">Google Play’de Yakında</a>
+      </div>
     </div>
+  </header>
 
-    <!-- SCREEN 3 (MANUEL ENGELLEME) -->
-    <div class="card">
-      <img src="screen3.jpg" style="width:100%; border-radius:12px;">
-      <h3>Tek Dokunuşla Engelle</h3>
-      <p>İstemediğin sanatçıları veya şarkıları anında kara listeye ekle.</p>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Android için akıllı müzik kontrolü</span>
+          <h1>Müziği Sen Kontrol Et</h1>
+          <p>
+            VETONE ile istemediğin şarkıları otomatik atla, kara liste oluştur
+            ve kontrolü elinde tut. Hızlı, sade ve arka planda çalışan bir deneyim.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#" class="btn btn-primary">🚀 Google Play’de Yakında</a>
+            <a href="https://x.com/vetoneofficial" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">🐦 X Hesabını Gör</a>
+          </div>
+
+          <div class="hero-note">
+            Android için geliştirildi • Daha temiz bir müzik deneyimi
+          </div>
+        </div>
+
+        <div class="hero-shot">
+          <img src="screen1.jpg" alt="VETONE ana ekran görünümü" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>VETONE Ne Yapar?</h2>
+          <p>
+            İstemediğin içerikleri yönetmeyi kolaylaştırır, kara liste mantığıyla
+            çalışır ve müzik deneyimini daha kontrollü hale getirir.
+          </p>
+        </div>
+
+        <div class="cards-3">
+          <div class="feature-card">
+            <div class="feature-icon">🎵</div>
+            <h3>Şu An Çalanı Gör</h3>
+            <p>
+              O anda çalan parçayı takip et ve tek ekrandan hızlı aksiyon al.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⛔</div>
+            <h3>Kara Liste Oluştur</h3>
+            <p>
+              İstemediğin şarkıları veya sanatçıları düzenli şekilde engelle.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Otomatik Skip</h3>
+            <p>
+              Engellediğin içerikler geldiğinde akış otomatik olarak yönetilsin.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="screens">
+      <div class="container">
+        <div class="section-header">
+          <h2>Uygulamayı Keşfet</h2>
+          <p>
+            VETONE’nin temel akışını ekrandan ekrana incele.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <article class="gallery-card">
+            <img src="screen1.jpg" alt="VETONE şu an çalıyor ekranı" />
+            <div class="gallery-content">
+              <h3>Müziği Sen Kontrol Et</h3>
+              <p>
+                Şu an çalan müziği görüntüle, ana ekrandan kontrolü eline al.
+              </p>
+            </div>
+          </article>
+
+          <article class="gallery-card">
+            <img src="screen3.jpg" alt="VETONE manuel engelleme ekranı" />
+            <div class="gallery-content">
+              <h3>Tek Dokunuşla Engelle</h3>
+              <p>
+                İstemediğin sanatçıları veya şarkıları anında kara listeye ekle.
+              </p>
+            </div>
+          </article>
+
+          <article class="gallery-card">
+            <img src="screen2.jpg" alt="VETONE otomatik skip ve aktivite ekranı" />
+            <div class="gallery-content">
+              <h3>Otomatik Skip</h3>
+              <p>
+                Engellediğin içerikler otomatik olarak atlanır ve aktivitelerde görünür.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>3 Adımda Başla</h2>
+          <p>
+            Basit kurulum, hızlı kullanım, temiz sonuç.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Kur</h3>
+            <p>Uygulamayı yükle ve gerekli izinleri ver.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Kara Listeyi Oluştur</h3>
+            <p>İstemediğin şarkı veya sanatçıları ekle.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Akışı Yönet</h3>
+            <p>VETONE arka planda kontrolü senin adına sürdürsün.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Daha Temiz Bir Müzik Deneyimi</h2>
+          <p>
+            VETONE ile istemediğin içerikleri azalt, kontrolü eline al
+            ve müzik deneyimini daha akıllı hale getir.
+          </p>
+          <a href="#" class="btn btn-primary">🚀 Google Play’de Yakında</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 VETONE</p>
+      <p style="margin-top: 8px;">
+        <a href="https://x.com/vetoneofficial" target="_blank" rel="noopener noreferrer">@vetoneofficial</a>
+      </p>
     </div>
+  </footer>
 
-    <!-- SCREEN 2 -->
-    <div class="card">
-      <img src="screen2.jpg" style="width:100%; border-radius:12px;">
-      <h3>Otomatik Skip</h3>
-      <p>Engellediğin içerikler otomatik olarak atlanır.</p>
-    </div>
-
-  </div>
-</section>
+</body>
+</html>
